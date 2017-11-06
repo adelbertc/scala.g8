@@ -1,45 +1,73 @@
-import de.heikoseeberger.sbtheader.license.Apache2_0
-
 lazy val buildSettings = List(
   organization       := "com.adelbertc",
-  licenses           += ("Apache 2.0", url("https://www.apache.org/licenses/LICENSE-2.0")),
-  headers            := Map(("scala", Apache2_0("2016", "Adelbert Chang"))),
-  scalaVersion       := "2.12.3",
-  crossScalaVersions := List("2.10.6", "2.11.11", scalaVersion.value),
-  version            := "0.1.0-SNAPSHOT"
+  licenses           += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.txt")),
+  scalaVersion       := "2.12.4",
+  crossScalaVersions := List("2.11.11", scalaVersion.value),
+  version            := "0.1.0-SNAPSHOT",
+
+  // sbt-header stuff
+  organizationName   := "Adelbert Chang",
+  startYear          := Some(2017)
 )
 
-val catsVersion         = "1.0.0-MF"
-val specs2Version       = "3.9.5"
-val disabledReplOptions = Set("-Ywarn-unused-import")
+val catsVersion         = "1.0.0-RC1"
+val catsEffectVersion   = "0.5"
+val specs2Version       = "4.0.0"
+val disabledReplOptions = List("-Ywarn-unused-import")
 
 lazy val commonSettings = List(
+  // From the infamous http://tpolecat.github.io/2017/04/25/scalac-flags.html
   scalacOptions ++= List(
-    "-deprecation",
-    "-encoding", "UTF-8",
-    "-feature",
-    "-language:existentials",
-    "-language:higherKinds",
-    "-language:implicitConversions",
-    "-unchecked",
-    "-Xfatal-warnings",
-    "-Xlint",
-    "-Yno-adapted-args",
-    "-Ywarn-dead-code",
-    "-Ywarn-numeric-widen",
-    "-Ywarn-value-discard"
+    "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
+    "-encoding", "utf-8",                // Specify character encoding used by source files.
+    "-explaintypes",                     // Explain type errors in more detail.
+    "-feature",                          // Emit warning and location for usages of features that should be imported explicitly.
+    "-language:existentials",            // Existential types (besides wildcard types) can be written and inferred
+    "-language:experimental.macros",     // Allow macro definition (besides implementation and application)
+    "-language:higherKinds",             // Allow higher-kinded types
+    "-language:implicitConversions",     // Allow definition of implicit functions called views
+    "-unchecked",                        // Enable additional warnings where generated code depends on assumptions.
+    "-Xcheckinit",                       // Wrap field accessors to throw an exception on uninitialized access.
+    "-Xfatal-warnings",                  // Fail the compilation if there are any warnings.
+    "-Xfuture",                          // Turn on future language features.
+    "-Xlint:adapted-args",               // Warn if an argument list is modified to match the receiver.
+    "-Xlint:by-name-right-associative",  // By-name parameter of right associative operator.
+    "-Xlint:delayedinit-select",         // Selecting member of DelayedInit.
+    "-Xlint:doc-detached",               // A Scaladoc comment appears to be detached from its element.
+    "-Xlint:inaccessible",               // Warn about inaccessible types in method signatures.
+    "-Xlint:infer-any",                  // Warn when a type argument is inferred to be `Any`.
+    "-Xlint:missing-interpolator",       // A string literal appears to be missing an interpolator id.
+    "-Xlint:nullary-override",           // Warn when non-nullary `def f()' overrides nullary `def f'.
+    "-Xlint:nullary-unit",               // Warn when nullary methods return Unit.
+    "-Xlint:option-implicit",            // Option.apply used implicit view.
+    "-Xlint:package-object-classes",     // Class or object defined in package object.
+    "-Xlint:poly-implicit-overload",     // Parameterized overloaded implicit methods are not visible as view bounds.
+    "-Xlint:private-shadow",             // A private field (or class parameter) shadows a superclass field.
+    "-Xlint:stars-align",                // Pattern sequence wildcard must align with sequence component.
+    "-Xlint:type-parameter-shadow",      // A local type parameter shadows a type already in scope.
+    "-Xlint:unsound-match",              // Pattern match may not be typesafe.
+    "-Yno-adapted-args",                 // Do not adapt an argument list (either by inserting () or creating a tuple) to match the receiver.
+    "-Ypartial-unification",             // Enable partial unification in type constructor inference
+    "-Ywarn-dead-code",                  // Warn when dead code is identified.
+    "-Ywarn-inaccessible",               // Warn about inaccessible types in method signatures.
+    "-Ywarn-infer-any",                  // Warn when a type argument is inferred to be `Any`.
+    "-Ywarn-nullary-override",           // Warn when non-nullary `def f()' overrides nullary `def f'.
+    "-Ywarn-nullary-unit",               // Warn when nullary methods return Unit.
+    "-Ywarn-numeric-widen",              // Warn when numerics are widened.
+    "-Ywarn-value-discard"               // Warn when non-Unit expression results are unused.
   ) ++ scalaVersionFlags(scalaVersion.value),
-  scalacOptions in (Compile, console) ~= { _.filterNot(disabledReplOptions.contains(_)) },
+  scalacOptions in (Compile, console) --= disabledReplOptions,
   scalacOptions in (Test, console) := (scalacOptions in (Compile, console)).value,
   libraryDependencies ++= List(
     compilerPlugin("org.spire-math" % "kind-projector" % "0.9.4" cross CrossVersion.binary),
-    "org.typelevel" %% "cats-kernel"       % catsVersion,
-    "org.typelevel" %% "cats-core"         % catsVersion,
-    "org.typelevel" %% "cats-free"         % catsVersion,
-    "org.typelevel" %% "cats-laws"         % catsVersion   % "test",
-    "org.specs2"    %% "specs2-core"       % specs2Version % "test",
-    "org.specs2"    %% "specs2-scalacheck" % specs2Version % "test"
-  ) ++ scalaVersionDeps(scalaVersion.value)
+    "org.typelevel" %% "cats-kernel"        % catsVersion,
+    "org.typelevel" %% "cats-core"          % catsVersion,
+    "org.typelevel" %% "cats-free"          % catsVersion,
+    "org.typelevel" %% "cats-effect"        % catsEffectVersion,
+    "org.typelevel" %% "cats-laws"          % catsVersion         % "test",
+    "org.specs2"    %% "specs2-core"        % specs2Version       % "test",
+    "org.specs2"    %% "specs2-scalacheck"  % specs2Version       % "test"
+  )
 )
 
 lazy val $name;format="camel"$Settings = buildSettings ++ commonSettings
@@ -51,10 +79,17 @@ lazy val $name;format="camel"$ =
   settings($name;format="camel"$Settings)
 
 def scalaVersionFlags(version: String): List[String] = CrossVersion.partialVersion(version) match {
-  case Some((2, x)) if x >= 11  => List("-Ywarn-unused-import")
-  case _                        => List.empty
-}
-
-def scalaVersionDeps(version: String): List[ModuleID] = CrossVersion.partialVersion(version) match {
-  List.empty
+  case Some((2, 12)) =>
+    List(
+      "-Xlint:constant",                   // Evaluation of a constant arithmetic expression results in an error.
+      "-Ywarn-extra-implicit",             // Warn when more than one implicit parameter section is defined.
+      "-Ywarn-unused:implicits",           // Warn if an implicit parameter is unused.
+      "-Ywarn-unused:imports",             // Warn if an import selector is not referenced.
+      "-Ywarn-unused:locals",              // Warn if a local definition is unused.
+      "-Ywarn-unused:params",              // Warn if a value parameter is unused.
+      "-Ywarn-unused:patvars",             // Warn if a variable bound in a pattern is unused.
+      "-Ywarn-unused:privates"             // Warn if a private member is unused.
+    )
+  case Some((2, 11)) => List.empty
+  case _             => List.empty
 }
