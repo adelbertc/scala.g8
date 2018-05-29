@@ -1,18 +1,18 @@
 lazy val buildSettings = List(
   organization       := "com.adelbertc",
   licenses           += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt")),
-  scalaVersion       := "2.12.4",
-  crossScalaVersions := List("2.11.11", scalaVersion.value),
+  scalaVersion       := "2.12.6",
+  crossScalaVersions := List("2.11.12", scalaVersion.value),
   version            := "0.1.0-SNAPSHOT",
 
   // sbt-header stuff
   organizationName   := "Adelbert Chang",
-  startYear          := Some(2017)
+  startYear          := Some(2018)
 )
 
 val catsVersion         = "1.1.0"
-val catsEffectVersion   = "0.10"
-val specs2Version       = "4.0.2"
+val catsEffectVersion   = "0.10.1"
+val specs2Version       = "4.2.0"
 val disabledReplOptions = List("-Ywarn-unused-import")
 
 lazy val commonSettings = List(
