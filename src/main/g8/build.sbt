@@ -1,7 +1,7 @@
 lazy val buildSettings = List(
   organization       := "com.adelbertc",
   licenses           += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt")),
-  scalaVersion       := "2.12.6",
+  scalaVersion       := "2.12.8",
   crossScalaVersions := List("2.11.12", scalaVersion.value),
   version            := "0.1.0-SNAPSHOT",
 
@@ -10,9 +10,9 @@ lazy val buildSettings = List(
   startYear          := Some(2018)
 )
 
-val catsVersion         = "1.1.0"
-val catsEffectVersion   = "0.10.1"
-val specs2Version       = "4.2.0"
+val catsVersion         = "1.5.0"
+val catsEffectVersion   = "1.1.0"
+val specs2Version       = "4.3.4"
 val disabledReplOptions = List("-Ywarn-unused-import")
 
 lazy val commonSettings = List(
@@ -59,7 +59,7 @@ lazy val commonSettings = List(
   scalacOptions in (Compile, console) --= disabledReplOptions,
   scalacOptions in (Test, console) := (scalacOptions in (Compile, console)).value,
   libraryDependencies ++= List(
-    compilerPlugin("org.spire-math" % "kind-projector" % "0.9.4" cross CrossVersion.binary),
+    compilerPlugin("org.spire-math" % "kind-projector" % "0.9.8" cross CrossVersion.binary),
     "org.typelevel" %% "cats-kernel"        % catsVersion,
     "org.typelevel" %% "cats-core"          % catsVersion,
     "org.typelevel" %% "cats-free"          % catsVersion,
