@@ -15,7 +15,7 @@ val specs2Version       = "4.7.1"
 
 lazy val commonSettings = List(
   libraryDependencies ++= List(
-    compilerPlugin("org.typelevel % "kind-projector" % "0.11.0" cross CrossVersion.full),
+    compilerPlugin("org.typelevel" % "kind-projector" % "0.11.0" cross CrossVersion.full),
     "org.typelevel" %% "cats-kernel"        % catsVersion,
     "org.typelevel" %% "cats-core"          % catsVersion,
     "org.typelevel" %% "cats-free"          % catsVersion,
@@ -26,10 +26,10 @@ lazy val commonSettings = List(
   )
 )
 
-lazy val $name;format="camel"$Settings = buildSettings ++ commonSettings
+lazy val $name;format="word-space,lower-camel"$Settings = buildSettings ++ commonSettings
 
-lazy val $name;format="camel"$ =
+lazy val $name;format="word-space,lower-camel"$ =
   project.in(file(".")).
   settings(name := "$name$").
   settings(description := "").
-  settings($name;format="camel"$Settings)
+  settings($name;format="word-space,lower-camel"$Settings)
